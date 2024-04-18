@@ -2,4 +2,4 @@
 
 Group-wise Relation Mining for Weakly-supervised Fine-grained Multimodal Emotion Recognition.
 
-![model](./model.pdf)
+![model](./1.jpg)
