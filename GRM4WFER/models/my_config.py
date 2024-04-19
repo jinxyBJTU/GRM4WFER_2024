@@ -4,7 +4,6 @@ class Config(object):
         self.lr = 0.0001
         self.train_epochs = 50 # 50
         self.early_stop_steps = 10
-        self.valid_best = True
 
         # False True
         self.use_uncertaiy = True
