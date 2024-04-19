@@ -29,7 +29,7 @@ We evaluate our model on the CASE dataset and the CEAP-360VR dataset.
 3. **Execution**
  - Ensure that all dependencies are installed and configured properly before running the code.
  - Modify the code as necessary to specify the file paths and parameters according to your dataset and experimental setup.
- - Execute the provided code command.py to train and evaluate the model.
+ - Execute the provided code ' python subject_main.py  --data_path './CASE/' --cuda 0 --seed 1 --task 'valence' ' to train and evaluate the model.
 4. **Output**
  - Upon successful execution, the code will generate output files containing model predictions, evaluation metrics, and possibly visualizations.
  - Analyze the output to interpret the results and compare them with our findings in the paper.
