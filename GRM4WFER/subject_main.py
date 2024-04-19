@@ -249,8 +249,6 @@ def main(args):
             f.writelines( log_sentence )
             f.writelines( '\n' )
 
-        # Epoch : {epoch}\n
-        best_acc = 0
         for epoch in range(1, configs.train_epochs + 1):
             # Train and validate
             start_time = time.time()
@@ -271,12 +269,6 @@ def main(args):
             with open(log_save_file , 'a') as f:
                 f.writelines( log_sentence )
                 f.writelines( '\n' )
-            
-            if test_fine_acc >= best_acc:
-                best_acc = test_fine_acc
-                best_trgs = trgs
-                best_outs = outs
-                best_output_lists = output_lists
 
             if mean_train_loss < best_train_loss:
                 best_train_loss = mean_train_loss
@@ -288,48 +280,12 @@ def main(args):
                 print("early stop")
                 break
 
-        if configs.valid_best:
-            acc, f1, kappa = ps(best_trgs, best_outs, savePath=log_save_file, average='weighted')
-        else:
             acc, f1, kappa = ps(trgs, outs, savePath=log_save_file, average='weighted')
 
         total_acc.append(acc)
         total_f1.append(f1)
         total_kappa.append(kappa)
-        total_output_lists.append(best_output_lists)
-
-    total_features = []
-    total_gains = []
-    total_weaks = []
-    total_fines = []
-    total_lengths = []
-    num_of_subjects = len(total_output_lists)
-    for subject_idx in range(num_of_subjects):    
-        total_features.append(total_output_lists[subject_idx][0])
-        total_gains.append(total_output_lists[subject_idx][1])
-        total_weaks.append(total_output_lists[subject_idx][2])
-        total_fines.append(total_output_lists[subject_idx][3])
-        total_lengths.append(total_output_lists[subject_idx][4])
-
-    total_features = np.stack(total_features,axis=0)
-    total_gains = np.stack(total_gains,axis=0)
-    total_weaks = np.stack(total_weaks,axis=0)
-    total_fines = np.stack(total_fines,axis=0)
-    total_lengths = np.stack(total_lengths,axis=0)
-    print(total_features.shape)
-    print(total_gains.shape)
-    print(total_weaks.shape)
-    print(total_fines.shape)
-    print(total_lengths.shape)
-    print()
-    np.savez_compressed(
-            result_name ,
-            test_features = total_features,
-            instance_gains = total_gains,
-            weak_labels = total_weaks,
-            fine_labels = total_fines,
-            total_lengths = total_lengths,
-            )
+        total_output_lists.append(output_lists)
 
     mean_acc = np.mean(np.array(total_acc))  
     mean_f1 = np.mean(np.array(total_f1))  
